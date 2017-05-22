@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Transaction record' do
   it 'parse' do
-    record = Sepa43::TransactionRecord.new('22    1234170101161231990511000000000012340000000000000000000000')
+    record = Sepa43::TransactionRecord.new('22    1234170101161231990511000000000012340000000000000000000000                ')
     expect(record.branch_code).to eq('1234')
     expect(record.transaction_date).to eq(Date.parse('2017-01-01'))
     expect(record.value_date).to eq(Date.parse('2016-12-31'))

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Account header' do
   it 'parses record' do
-    record = Sepa43::AccountHeader.new('111234567812345678901701011703312000000001234569783POBRECITO HABLADOR        ')
+    record = Sepa43::AccountHeader.new('111234567812345678901701011703312000000001234569783POBRECITO HABLADOR           ')
 
     expect(record.account).not_to be_nil
     expect(record.account.bank_code).to eq('1234')

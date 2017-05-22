@@ -8,7 +8,7 @@ module Sepa43
     private
 
     def parse(record)
-      result = record.scan(/\A(\d{2})(\d{2})(.{38})(.{1,38})\z/i)
+      result = record.scan(/\A(\d{2})(\d{2})(.{38})(.{38})\z/i)
       raise 'Invalid record.' if result.empty?
 
       parts = result.first

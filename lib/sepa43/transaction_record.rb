@@ -13,7 +13,7 @@ module Sepa43
     private
 
     def parse(record)
-      result = record.scan(/\A(\d{2}).{4}(\d{4})(\d{6})(\d{6})(\d{2})(\d{3})(\d)(\d{14})(\d{10})(\d{12})(.{0,16})\z/i)
+      result = record.scan(/\A(\d{2}).{4}(\d{4})(\d{6})(\d{6})(\d{2})(\d{3})(\d)(\d{14})(\d{10})(\d{12})(.{16})\z/i)
       raise 'Invalid record.' if result.empty?
 
       parts = result.first
@@ -35,7 +35,7 @@ module Sepa43
       @amount = parts[7].to_f / 100.0
       @document_number = parts[8]
       @reference_1 = parts[9]
-      @reference_2 = parts[10]
+      @reference_2 = parts[10].strip
     end
   end
 end
