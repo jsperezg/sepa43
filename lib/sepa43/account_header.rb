@@ -1,5 +1,6 @@
 require 'date'
 require 'sepa43/account'
+require 'sepa43/sign_code'
 
 module Sepa43
   CURRENCIES = {
@@ -16,14 +17,9 @@ module Sepa43
     euro: '978'
   }.freeze
 
-  HEADER_KEYS = {
-    debtor: 1,
-    creditor: 2
-  }.freeze
-
   # Account header record.
   class AccountHeader
-    attr_reader :account, :start_date, :end_date, :key, :balance, :currency, :name
+    attr_reader :account, :start_date, :end_date, :sign, :balance, :currency, :name
 
     def initialize(record)
       parse(record)
@@ -38,22 +34,19 @@ module Sepa43
       parts = result.first
       validate(parts)
       extract_data_from(parts)
-
-      # => ["11", "2100", "7677", "2200006857", "170101", "170331", "2", "00000000240844", "978", "3", "JUAN SALVADOR PEREZ GARCIA"]
     end
 
     def validate(parts)
       parts[0] == '11' || raise('Invalid record.')
-      parts[9] == '3' || raise('Invalid mode. Only mode 3 is supported.')
     end
 
     def extract_data_from(parts)
       @account = Account.new(bank_code: parts[1],
                              branch_code: parts[2],
-                             account: parts[3])
+                             number: parts[3])
       @start_date = Date.parse(parts[4])
       @end_date = Date.parse(parts[5])
-      @key = parts[6].to_i
+      @sign = Sepa43::SignCode.new(parts[6])
       @balance = parts[7].to_f / 100.0
       @currency = parts[8]
       @name = parts[10].strip
