@@ -1,20 +1,11 @@
 module Sepa43
-  class AdditionalRecord
+  class AdditionalRecord < Record43
     attr_reader :data_code, :first_item, :second_item
     def initialize(record)
-      parse(record)
+      super(/\A(\d{2})(\d{2})(.{38})(.{38})\z/i, record)
     end
 
-    private
-
-    def parse(record)
-      result = record.scan(/\A(\d{2})(\d{2})(.{38})(.{38})\z/i)
-      raise 'Invalid record.' if result.empty?
-
-      parts = result.first
-      validate(parts)
-      extract_data_from(parts)
-    end
+    protected
 
     def validate(parts)
       parts[0] == '23' || raise('Invalid record.')

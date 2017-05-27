@@ -8,7 +8,7 @@ describe 'Transaction record' do
     expect(record.value_date).to eq(Date.parse('2016-12-31'))
     expect(record.shared_item).to eq('99')
     expect(record.own_item).to eq('051')
-    expect(record.sign.is_debtor?).to be_truthy
+    expect(record.balance_code.is_debtor?).to be_truthy
     expect(record.amount).to eq(12.34)
     expect(record.document_number).to eq('0000000000')
     expect(record.reference_1).to eq('000000000000')

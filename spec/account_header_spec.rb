@@ -12,9 +12,9 @@ describe 'Account header' do
     expect(record.start_date).to eq(Date.parse('2017-01-01'))
     expect(record.end_date).to eq(Date.parse('2017-03-31'))
 
-    expect(record.sign.is_creditor?).to be_truthy
+    expect(record.balance_code.is_creditor?).to be_truthy
     expect(record.balance).to eq(1234.56)
-    expect(record.currency).to eq(Sepa43::CURRENCIES[:euro])
+    expect(record.currency.name).to eq('Euro')
 
     expect(record.name).to eq('POBRECITO HABLADOR')
   end

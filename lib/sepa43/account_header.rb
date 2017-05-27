@@ -1,40 +1,22 @@
 require 'date'
+
+require 'money'
+
 require 'sepa43/account'
-require 'sepa43/sign_code'
+require 'sepa43/balance_code'
+require 'sepa43/record43'
+
 
 module Sepa43
-  CURRENCIES = {
-    australian_dollar: '036',
-    canadian_dollar: '124',
-    danish_crown: '208',
-    japanese_yen: '392',
-    new_zealand_dollar: '554',
-    norwegian_crown: '578',
-    swedish_crown: '752',
-    swiss_franc: '756',
-    sterling_pound: '826',
-    us_dollar: '840',
-    euro: '978'
-  }.freeze
-
   # Account header record.
-  class AccountHeader
-    attr_reader :account, :start_date, :end_date, :sign, :balance, :currency, :name
+  class AccountHeader < Record43
+    attr_reader :account, :start_date, :end_date, :balance_code, :balance, :currency, :name
 
     def initialize(record)
-      parse(record)
+      super(/\A(\d{2})(\d{4})(\d{4})(\d{10})(\d{6})(\d{6})(\d)(\d{14})(\d{3})(\d)(.{26}).{3}\z/i, record)
     end
 
-    private
-
-    def parse(record)
-      result = record.scan(/\A(\d{2})(\d{4})(\d{4})(\d{10})(\d{6})(\d{6})(\d)(\d{14})(\d{3})(\d)(.{26}).{3}\z/i)
-      raise 'Invalid record.' if result.empty?
-
-      parts = result.first
-      validate(parts)
-      extract_data_from(parts)
-    end
+    protected
 
     def validate(parts)
       parts[0] == '11' || raise('Invalid record.')
@@ -46,9 +28,9 @@ module Sepa43
                              number: parts[3])
       @start_date = Date.parse(parts[4])
       @end_date = Date.parse(parts[5])
-      @sign = Sepa43::SignCode.new(parts[6])
+      @balance_code = BalanceCode.new(parts[6])
       @balance = parts[7].to_f / 100.0
-      @currency = parts[8]
+      @currency = Money::Currency.find_by_iso_numeric(parts[8].to_i)
       @name = parts[10].strip
     end
   end

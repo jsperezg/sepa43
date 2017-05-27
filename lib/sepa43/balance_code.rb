@@ -1,5 +1,5 @@
 module Sepa43
-  class SignCode
+  class BalanceCode
     def initialize(code)
       @code = code
     end
