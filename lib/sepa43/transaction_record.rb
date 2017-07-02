@@ -7,8 +7,11 @@ module Sepa43
     attr_reader :branch_code, :transaction_date, :value_date, :shared_item, :own_item, :balance_code, :amount, :document_number,
                 :reference_1, :reference_2
 
+    attr_accessor :additional
+
     def initialize(record)
       super(/\A(\d{2}).{4}(\d{4})(\d{6})(\d{6})(\d{2})(\d{3})(\d)(\d{14})(\d{10})(\d{12})(.{16})\z/i, record)
+      @additional = []
     end
 
     protected

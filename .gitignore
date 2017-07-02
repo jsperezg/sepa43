@@ -52,3 +52,4 @@ Gemfile.lock
 .idea
 
 *.q43
+/spec/fixtures/files/TT210517.666

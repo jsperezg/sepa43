@@ -17,7 +17,7 @@ module Sepa43
     private
     def parse(record)
       result = record.scan(@pattern)
-      raise 'Invalid record.' if result.empty?
+      raise "Invalid record: '#{record}'" if result.empty?
 
       parts = result.first
       validate(parts)

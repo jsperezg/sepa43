@@ -37,4 +37,5 @@ invoice payments as well.
   spec.add_development_dependency 'rspec', '~> 3.0'
 
   spec.add_runtime_dependency 'money'
+  spec.add_runtime_dependency 'aasm', '~> 4.12.0'
 end
