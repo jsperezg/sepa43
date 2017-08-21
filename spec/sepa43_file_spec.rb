@@ -19,5 +19,13 @@ describe 'SEPA 43 File' do
         expect(account.footer).not_to  be_nil
       end
     end
+
+    it  'Read all transcations' do
+      file = Sepa43::SEPA43File.new("#{Dir.pwd}/spec/fixtures/files/TT210517.666")
+      file.load
+
+      account = file.accounts.first
+      expect(account.transactions.count).to eq(98)
+    end
   end
 end

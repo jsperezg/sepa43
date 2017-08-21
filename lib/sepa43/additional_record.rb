@@ -13,7 +13,7 @@ module Sepa43
     end
 
     def extract_data_from(parts)
-      @data_code = parts[1].to_i
+      @data_code = parts[1]
       @first_item = parts[2].strip
       @second_item = parts[3].strip
     end
